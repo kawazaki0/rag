@@ -1,0 +1,46 @@
+@startuml
+|User|
+start
+:Run script;
+
+|Script|
+:Open PDF; // Enhancement: Support multiple file formats (e.g., DOCX, TXT)
+:Extract text from PDF; // Enhancement: Improve text extraction accuracy
+:Chunk text; // Enhancement: Optimize chunking strategy
+
+|OpenAI|
+:Create embeddings for chunks; // Enhancement: Use more advanced embedding models
+:Return embeddings;
+
+|Script|
+:Semantic search; // Enhancement: Implement more efficient search algorithms
+:Create embedding for query;
+
+|OpenAI|
+:Return query embedding;
+
+|Script|
+:Calculate cosine similarity; // Enhancement: Explore alternative similarity metrics
+:Sort and select top chunks;
+
+|OpenAI|
+:Generate user prompt; // Enhancement: Enhance prompt creation techniques
+:Return user prompt;
+
+|Script|
+:Generate AI response; // Enhancement: Use fine-tuned language models
+
+|OpenAI|
+:Return AI response;
+
+|Script|
+:Create evaluation prompt; // Enhancement: Implement feedback loops for continuous learning
+
+|OpenAI|
+:Generate evaluation response; // Enhancement: Incorporate user feedback for better relevance
+:Return evaluation response;
+
+
+|User|
+stop
+@enduml

@@ -1,0 +1,28 @@
+@startuml
+actor User
+participant "1_simple_rag_simplest.py" as Script
+participant "OpenAI" as OpenAI
+participant "fitz" as Fitz
+
+User -> Script: Run script
+Script -> Fitz: open(pdf_path)
+Fitz -> Script: return PDF object
+Script -> Fitz: get_text("text") for each page
+Fitz -> Script: return text for each page
+Script -> Script: concatenate text
+Script -> Script: chunk_text(text, 1000, 200)
+Script -> OpenAI: create embeddings for chunks
+OpenAI -> Script: return embeddings
+Script -> Script: semantic_search(query, text_chunks, embeddings, k=2)
+Script -> OpenAI: create embedding for query
+OpenAI -> Script: return query embedding
+Script -> Script: calculate cosine similarity
+Script -> Script: sort and select top chunks
+Script -> Script: create user prompt
+Script -> OpenAI: generate AI response
+OpenAI -> Script: return AI response
+Script -> Script: create evaluation prompt
+Script -> OpenAI: generate evaluation response
+OpenAI -> Script: return evaluation response
+Script -> User: print evaluation response
+@enduml
