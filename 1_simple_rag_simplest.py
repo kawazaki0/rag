@@ -58,7 +58,9 @@ text_chunks: list[str] = chunk_text(extracted_text, 1000, 200)
 pdf_embedded: CreateEmbeddingResponse = client.embeddings.create(model=embedding_model, input=text_chunks)
 
 data: dict[str, str] = {'has_answer': True,
-                        'ideal_answer': 'Explainable AI (XAI) aims to make AI systems more transparent and understandable, providing insights into how they make decisions. It\'s considered important for building trust, accountability, and ensuring fairness in AI systems.',
+                        'ideal_answer': 'Explainable AI (XAI) aims to make AI systems more transparent and understandable, '
+                                        'providing insights into how they make decisions. It\'s considered important for building trust, '
+                                        'accountability, and ensuring fairness in AI systems.',
                         'question': 'What is \'Explainable AI\' and why is it considered important?',
                         'reasoning': 'The document directly defines and explains the importance of XAI.',
                         'reference': 'Chapter 5: The Future of Artificial Intelligence - Explainable AI (XAI); Chapter 19: AI and Ethics'}
@@ -78,8 +80,12 @@ ai_response: ChatCompletion = client.chat.completions.create(
         {"role": "user", "content": user_prompt}
     ]
 )
-evaluate_system_prompt: str = "You are an intelligent evaluation system tasked with assessing the AI assistant's responses. If the AI assistant's response is very close to the true response, assign a score of 1. If the response is incorrect or unsatisfactory in relation to the true response, assign a score of 0. If the response is partially aligned with the true response, assign a score of 0.5."
-evaluation_prompt: str = f"User Query: {data['question']}\nAI Response:\n{ai_response.choices[0].message.content}\nTrue Response: {data['ideal_answer']}\n{evaluate_system_prompt}"
+evaluate_system_prompt: str = ("You are an intelligent evaluation system tasked with assessing the AI assistant's responses. "
+                               "If the AI assistant's response is very close to the true response, assign a score of 1. "
+                               "If the response is incorrect or unsatisfactory in relation to the true response,"
+                               " assign a score of 0. If the response is partially aligned with the true response, assign a score of 0.5.")
+evaluation_prompt: str = (f"User Query: {data['question']}\nAI Response:\n{ai_response.choices[0].message.content}\n"
+                          f"{evaluate_system_prompt}")
 
 evaluation_response: ChatCompletion = client.chat.completions.create(
     model=openai_model,
